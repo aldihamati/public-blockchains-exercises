@@ -10,7 +10,10 @@
 
 str1 = "Please don't do it.";
 str2 = 'He said "Goodbye" and left.';
-
+console.log(str1 + "   " +str2);
+str1 = 'Please don\'t do it.';
+str2 = "He said \"Goodbye\" and left.";
+console.log(str1 + "   " +str2);
 // One string is wrapped in double quotes and the other in single quotes. 
 // What is the difference? Can you swap the content and the type of quotes?
 // Hint: characters can be escaped by placing a backslah before them (\).
@@ -25,12 +28,12 @@ str2 = 'Just like everyone else.';
 
 // a. Join together these two strings and assign the result to a new variable
 // named finalStr.
-
-
+str3=str1+" "+str2;
+console.log(str3);
 // b. Did you remember to add a space between them?
 // If so, how many characters is the final string?
 // Hint: Use the length property.
-
+console.log(str3.length);
 
 // EXERCISE 3. Joining Different Types.
 ///////////////////////////////////////
@@ -47,6 +50,10 @@ luzernPopulation = 82000;
 // Then, join it with str1 and update finalStr.
 // Important. The sentence must end with a dot (needed for exercise below).
 
+str2 = 'Just like other ' + luzernPopulation + ' persons in Luzern.';
+finalStr = str1 + ' ' + str2;
+console.log(finalStr);
+
 // EXERCISE 4. Mind the Tick.
 /////////////////////////////
 
@@ -55,8 +62,11 @@ luzernPopulation = 82000;
 // the format `${myvariable}`.
 
 // Repeast exercise 3 using backticks.
-
-
+luzernPopulation = 82000;
+str1 = "Always remember that you are absolutely unique.";
+finalStr = `${str1} Just like ${luzernPopulation} persons in Luzern.`;
+console.log(finalStr);
+//$ perdoren si var brenda
 // EXERCISE 5. Such a String Manipulator.
 /////////////////////////////////////////
 
@@ -67,16 +77,20 @@ luzernPopulation = 82000;
 // a. From the variable finalStr, extract a substring which contains only
 // the first part (i.e., the  initial content of str1).
 // Hint: Use the .substring() method and the length property.
+luzernPopulation = 82000;
+str1 = "Always remember that you are absolutely unique.";
+finalStr = `${str1} Just like ${luzernPopulation} persons in Luzern.`;
 
-
+finalStr = finalStr.substring(0, str1.length);
+console.log(finalStr);
 // f. Now shout it loud and make the it upper case.
 // Hint: Use the method .toUpperCase().
-
+finalStr.toUpperCase();
 
 // g. Let's be honest. An upper case sentence must end with an exclamation mark.
 // Replace the dot at the end of the sentence with an exclamation mark.
-
-
+finalStr = finalStr.substring(0, (finalStr.length - 1)) + '!';
+console.log(finalStr);
 // EXERCISE 6. Operators: const, var, let.
 //////////////////////////////////////////
 
@@ -94,7 +108,7 @@ luzernPopulation = 82000;
 
 // a. Assign finalStr to a constant.
 finalStr = 'ALWAYS REMEMBER THAT YOU ARE ABSOLUTELY UNIQUE!';
-
+const myFinalStr=finalStr;
 
 // b. Now try to change it to something else.
 

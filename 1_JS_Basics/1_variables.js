@@ -89,6 +89,9 @@ console.log(primitive);
 // an object before you interact with them and may have methods. More on this
 // later.
 
+new_string='I am no longer primitive. I am making progress!';
+primitive=new_string;
+console.log(primitive);
 // EXERCISE 2. Be a Looser!
 ///////////////////////////
 
@@ -138,13 +141,13 @@ console.log('The type of Morpho is now: ' + typeof morpho);
 
 
 // Strings
-
+morpho='string';
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Characters
-
+morpho='s';
 // A one-type character string is also a string. Other languages have
 // the type 'char' for this special case, but not JS.
 
@@ -152,26 +155,26 @@ console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Booleans.
-
+morpho=false;
 // False.
 
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // True.
-
+morpho=true;
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Not much to say about booleans, they are kind of booring. But useful.
 
 // Undefined.
-
+morpho=undefined;
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 
 // Null
-
+morpho=null
 console.log('Morpho: ' + morpho);
 console.log('The type of Morpho is now: ' + typeof morpho);
 

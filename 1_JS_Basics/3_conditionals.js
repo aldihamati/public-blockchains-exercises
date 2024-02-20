@@ -42,7 +42,15 @@
 // Hint: variables do not transfer magically across files, that is why you
 // need to create a new variable with the population of Luzern here.
 // Hint2: Use console.log() to print.
-
+random_nr=Math.random()*100000;
+luzern_pop=82000;
+if(random_nr>luzern_pop){
+    console.log("Go Luzern");
+}else if (random_nr==luzern_pop){
+    console.log("Matrix?!r");
+}else if (random_nr<luzern_pop){
+    console.log("Few but good");
+}
 // EXERCISE 2. Block Party.
 ///////////////////////////
 
@@ -51,10 +59,10 @@
 
 // The following code isn't working. Why?
 if (2 > 1) {
-    let deepThought = 'Everything is obvious once you know the answer.'    
+    deepThought = 'Everything is obvious once you know the answer.'    
 }
 console.log(deepThought);
-
+//so let is only within the brackets if defined with keyword let
 // a. Fix it using it var instead of let.
 
 // b. Fix it using let.

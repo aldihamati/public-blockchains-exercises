@@ -36,6 +36,10 @@ console.log(typeof null);
 
 // EXERCISE 1. Create an object to represent a person.
 //////////////////////////////////////////////////////
+person={
+    name: 'Brendan Eich',
+    birthY: 1961
+};
 
 // a. The person is identified by two properties: name and year.
 // Let's pick Brendan Eich, the creator of JavaScript. The guy who
@@ -45,6 +49,7 @@ console.log(typeof null);
 
 // b. Access the properties of the person object and create a sentence of the
 // type: "X was born in Y." where X is Brendan Eich and Y is 1961.
+console.log(person.name + "is born in year: " + person.birthY + ".");
 
 // c. Bonus exercise. Instead of saying that year of birth, you could say that
 // Brendan Eich is Z years old.  
