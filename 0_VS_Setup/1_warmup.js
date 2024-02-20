@@ -85,7 +85,7 @@ function function1() {
 // At every word "not" there is a new cursor, so you can write multiple rows
 // at once. Delete "not" and replace the exclamation mark with a sad face. 
 
-catchMeIfYouCan1 = "You didt catch medddd!";
+catchMeIfYouCan1 = "You did not catch me!";
 catchMeIfYouCan2 = "You did not catch me!";
 catchMeIfYouCan3 = "You did not catch me!";
 
