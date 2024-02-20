@@ -54,13 +54,12 @@
 // a. Hint: follow the pattern.
 variable1 = 1;
 variable2 = 2;
-variable3 3;
+variable3 = 3;
 
 // b. Hint: This function needs a name after the word function.
-function () {
+function function1() {
   console.log("Hello!");
 }
-
 // EXERCISE 2. Producticity: Shorcuts and More.
 ///////////////////////////////////////////////
 
@@ -86,7 +85,7 @@ function () {
 // At every word "not" there is a new cursor, so you can write multiple rows
 // at once. Delete "not" and replace the exclamation mark with a sad face. 
 
-catchMeIfYouCan1 = "You did not catch me!";
+catchMeIfYouCan1 = "You didt catch medddd!";
 catchMeIfYouCan2 = "You did not catch me!";
 catchMeIfYouCan3 = "You did not catch me!";
 
@@ -106,7 +105,7 @@ console.log("1. I would like to go above.");
 // a. Select all the code below and press the combination of keys to
 // correctly indent your code. What combination? It depends on your
 // operating system!
-
+//djhdhdhdhdhdhdhdhdhdhdhdhd
 // To format the whole document:
 
 // On Windows : Shift + Alt + F
@@ -116,12 +115,14 @@ console.log("1. I would like to go above.");
 // Or check the keybindings link in the previous exercise to format only a
 // portion of the code.
 
+let test_varibale=5;
+
 let a = 1234;
-                a++;
+a++;
 if (a > 123) {
-a--;
+  a--;
 } else a++;
-            console.log(a);
+console.log(a);
 
 // Nothing happened?
 // If so, your code (technically my code, if you just cloned it)
