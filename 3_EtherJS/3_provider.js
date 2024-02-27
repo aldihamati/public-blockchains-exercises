@@ -1,3 +1,7 @@
+
+// Loading path module for operations with file paths.
+const path = require('path');
+
 // Ethers JS: Providers.
 ////////////////////////
 
@@ -49,7 +53,7 @@ const mainnetInfuraUrl = `${process.env.INFURA_MAINNET}${providerKey}`;
 // console.log(mainnetInfuraUrl);
 const mainnetProvider = new ethers.JsonRpcProvider(mainnetInfuraUrl);
 
-// b. Verify that the network's name is "mainnet" and the chain id that theis 1.
+// b. Verify that the network's name is "mainnet" and the chain id is 1.
 
 // Hint: `getNetwork()`.
 

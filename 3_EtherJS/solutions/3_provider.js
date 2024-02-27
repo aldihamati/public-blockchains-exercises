@@ -1,3 +1,7 @@
+
+// Loading path module for operations with file paths.
+const path = require('path');
+
 // Ethers JS: Providers.
 ////////////////////////
 
@@ -13,7 +17,11 @@
 // Hint: As you did in file 1_wallet.
 
 // Require packages.
-require('dotenv').config();
+
+pathToDotEnv = path.join(__dirname, '..', '..', '.env');
+// console.log(pathToDotEnv);
+require("dotenv").config({ path: pathToDotEnv });
+
 const ethers = require("ethers");
 
 
@@ -43,13 +51,12 @@ const ethers = require("ethers");
 // Hint: check EthersJS docs for the method `JsonRpcProvider` and what 
 // parameters it needs (nested hint: you need something from the .env file).
 
-const providerKey = process.env.INFURA_KEY;
+const providerKey = process.env.ALCHEMY_KEY;
 
-const mainnetInfuraUrl = `${process.env.INFURA_MAINNET}${providerKey}`;
-// console.log(mainnetInfuraUrl);
-const mainnetProvider = new ethers.JsonRpcProvider(mainnetInfuraUrl);
+const mainnetUrl = `${process.env.ALCHEMY_MAINNET_API_URL}${providerKey}`;
+const mainnetProvider = new ethers.JsonRpcProvider(mainnetUrl);
 
-// b. Verify that the network's name is "mainnet" and the chain id that theis 1.
+// b. Verify that the network's name is "mainnet" and the chain id is 1.
 
 // Hint: the value of chain id returned by Ethers JS is of type "BigInt". 
 // As the name suggests, that is a very a data type capable of holding very
@@ -97,7 +104,6 @@ const network = async () => {
 // return;
 
 
-
 // Exercise 2. Block Number.
 ////////////////////////////
 
@@ -117,23 +123,23 @@ const blockNum = async () => {
 // experimental features, but also because they are replaced often and so
 // they have a shorter chain. How shorter?
 
-// Connect to the Goerli test net, get the latest block number and print
+// Connect to the Sepolia test net, get the latest block number and print
 // the difference in chain length with mainnet.
 
-const goerliInfuraUrl = `${process.env.INFURA_GOERLI}${providerKey}`;
-// console.log(goerliInfuraUrl);
-const goerliProvider = new ethers.JsonRpcProvider(goerliInfuraUrl);
+const sepoliaUrl = `${process.env.ALCHEMY_SEPOLIA_API_URL}${providerKey}`;
+// console.log(sepoliaUrl);
+const sepoliaProvider = new ethers.JsonRpcProvider(sepoliaUrl);
 
 
-// Look up the current block number in Mainnet and Goerli.
+// Look up the current block number in Mainnet and Sepolia.
 const blockDiff = async () => {
     let blockNumberM = await mainnetProvider.getBlockNumber();
     console.log('Mainnet block number: ', blockNumberM);
 
-    let blockNumberG = await goerliProvider.getBlockNumber();
-    console.log('Goerli block number: ', blockNumberG);
+    let blockNumberS = await sepoliaProvider.getBlockNumber();
+    console.log('Sepolia block number: ', blockNumberS);
 
-    console.log('Mainnet is ' + (blockNumberM - blockNumberG) +
+    console.log('Mainnet is ' + (blockNumberM - blockNumberS) +
                 ' blocks ahead');
 }
 
@@ -152,7 +158,7 @@ const blockDiff = async () => {
 // - the built-in Date object,
 // - the setInterval and clearInterval functions
 
-// Run the function once for Mainnet and once for Goerli. Do you get similar
+// Run the function once for Mainnet and once for Sepolia. Do you get similar
 // results?
 
 // Asynchronous functions with pre-defined input parameters.
@@ -160,7 +166,7 @@ const checkBlockTime = async (providerName = "mainnet", blocks2check = 3) => {
 
     // JS Ternary Operator.
     let provider = providerName.toLowerCase() === "mainnet" ? 
-        mainnetProvider : goerliProvider;
+        mainnetProvider : sepoliaProvider;
 
     // Get initial block number and timestamp.
     let d = Date.now();
@@ -197,7 +203,7 @@ const checkBlockTime = async (providerName = "mainnet", blocks2check = 3) => {
 
 // checkBlockTime("Mainnet");
 
-// checkBlockTime("Goerli");
+// checkBlockTime("Sepolia");
 
 // b. Bonus. The checkBlockTime function can be rewritten more efficiently 
 // using the Observer pattern offer by EtherS JS and listening to the 
@@ -211,7 +217,7 @@ const checkBlockTime2 = async (providerName = "mainnet", blocks2check = 3) => {
 
     // JS Ternary Operator.
     let provider = providerName.toLowerCase() === "mainnet" ? 
-        mainnetProvider : goerliProvider;
+        mainnetProvider : sepoliaProvider;
 
     // Get initial block number and timestamp.
     let d = Date.now();
@@ -285,10 +291,10 @@ const blockInfo = async () => {
 // address.
 
 const ens = async () => {
-    let unimaAddress = await goerliProvider.resolveName('unima.eth');
+    let unimaAddress = await sepoliaProvider.resolveName('unima.eth');
     console.log(unimaAddress);
 
-    let ensName = await goerliProvider.lookupAddress(unimaAddress);
+    let ensName = await sepoliaProvider.lookupAddress(unimaAddress);
     console.log(ensName);
 };
 
@@ -313,57 +319,19 @@ const ens = async () => {
 const balance = async (ensName = "unima.eth") => {
 
     // Get the balance for "unima.eth".
-    let bal = await goerliProvider.getBalance(ensName);
+    let bal = await sepoliaProvider.getBalance(ensName);
     // console.log(bal);
 
     // Nicely formatted.
     console.log(ensName, "has", ethers.formatEther(bal), "ETH");
 
     // Check the balance is the same when resolving the ens address.
-    let unimaAddress = await goerliProvider.resolveName(ensName);
-    let bal2 = await goerliProvider.getBalance(unimaAddress);
+    let unimaAddress = await sepoliaProvider.resolveName(ensName);
+    let bal2 = await sepoliaProvider.getBalance(unimaAddress);
     
     console.log('Are the two balances equal?', bal === bal2 ? 'Yes' : 'No');
 
 };
 
 // balance("vitalik.eth");
-
-
-// Exercise 7. Get ERC20 Balance.
-/////////////////////////////////
-
-// To get the balance of ERC20 tokens the procedure is a bit more complex.
-// ETH is the native currency of Ethereum, so it's "simply there". Instead,
-// ERC20 tokens are added to Ethereum via smart contracts. So, we need to 
-// interact with the smart contract of the specific token we want to know
-// the balance of.
-
-// First, we need to know the address of the smart contract. We can use the 
-// LINK contract.
-const linkAddress = '0x326c977e6efc84e512bb9c30f76e30c160ed06fb';
-
-// At the address, there is only bytecode. So we need to tell Ethers JS, what
-// methods can be invoked. To do so, we pass the Application Binary Interface
-// (ABI) of the contract, available at Etherscan. For your convenience, 
-// the LINK ABI is stored in this directory, under "link_abi.json";
-
-// Note: the path must be adapted to the folder where your run this code.
-const linkABI = require('../link_abi.json');
-
-// Now your task. Get the balance for LINK for "unima.eth" and "vitalik.eth".
-// Hint: you need first to create a Contract object via `ethers.Contract`, 
-// then invoke the appropriate smart contract method.
-// Hint2: want to try it with your own address? Get some LINK ERC20 tokens here: 
-// https://faucets.chain.link/goerli
-
-const link = async () => {
-    const contract = new ethers.Contract(linkAddress, linkABI, goerliProvider);
-    const linkBalance = await contract.balanceOf("unima.eth");
-    console.log(ethers.formatEther(linkBalance));
-};
-
-
-// link();
-
 
