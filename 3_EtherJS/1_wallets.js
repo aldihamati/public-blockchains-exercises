@@ -39,7 +39,7 @@
 // be executed, until you tell the process to stop. 
 
 // This line will tell the process to stop.
-process.exit(0);
+//process.exit(0);
 console.log('I am sad line...I will not be printed to console :(');
 
 // a. Move the sad line above and below `process.exit(0);` to check that the
@@ -54,7 +54,10 @@ console.log('I am sad line...I will not be printed to console :(');
 // Hint: German keyboard curly brackets: Alt-gr-7 (open), Alt-gr-8 (close).
 
 let exercise = 0;
-
+function exit(){
+    console.log("Exercise " + exercise + " is completed.");
+    process.exit(0);
+}
 // Your code here!
 
 // c. Bonus. Did you realize that JavaScript/Node.JS has three different ways
@@ -72,7 +75,15 @@ let exercise = 0;
 // for all three functions? 
 
 // Your code here!
+const exit2= function(){
+    console.log("Exercise " + exercise + " is completed.");
+    process.exit(0);
+}
 
+const exit3 = () => {
+    console.log("Exercise " + exercise + " is completed.");
+    process.exit(0);
+};
 
 // Exercise 1. NPM Warm Up.
 ///////////////////////////
@@ -92,7 +103,7 @@ exercise = 1;
 
 require('dotenv').config();
 
-// exit();
+exit();
 
 // Exercise 2. Create .env file.
 ////////////////////////////////
@@ -130,7 +141,12 @@ exercise = '3a';
 // Hint: https://javascript.info/ifelse
 
 // Your code here!
+console.log(process.env.METAMASK_ACCOUNT_1);
 
+let privatekey=(process.env.METAMASK_ACCOUNT_1);
+if(privatekey==""){
+    console.log("Your private key is not found.");
+}
 // exit();
 
 // b. Create an array with all the names of the variables written in the .env
@@ -140,7 +156,8 @@ exercise = '3a';
 exercise = '3b';
 
 // Your code here!
-
+let nameInEnv=["","",""];
+console.log("The length of the array of .env to check is: ", nameInEnv.length);
 // exit();
 
 // c. Loop through all the elements of the array and check that the variable
@@ -150,14 +167,22 @@ exercise = '3b';
 // Hint2: `process.env` is an object, if you don't know how to access its 
 // field, read here: https://javascript.info/object
 
-
 // Solution 1. forEach.
 variablesToCheck.forEach(v => {
-    // Your code here!
+    if(!process.env[v]){
+        console.log(process.env[v]);
+        console.log(`Missing ${v}, fix your .env file`);
+    }
 });
 
 // Solution 2. For-loop.
-
+for(let index=0;v<variablesToCheck.length;v++){
+    let v=variablesToCheck[index];
+    if(!process.env[v]){
+        console.log(process.env[v]);
+        console.log(`Missing ${v}, fix your .env file`);
+    }
+}
 // Your code here!
 
 
@@ -173,7 +198,7 @@ const ethers = require("ethers");
 // a. Create a random wallet and print the address, the private key,
 // and the mnenomic phrase.
 // Hint: ethers.Wallet.createRandom();
-
+const wallet=ethers.Wallet.createRandom();
 
 // exit();
 
@@ -195,7 +220,9 @@ let baseDevPath = "m/44'/60'/0'/0/";
 console.log("Derivation path:", wallet.path);
 
 // Your code here!
-
+if(baseDevPath==wallet.path){
+    console.log("They have the same path");
+}else console.log("They do not have the same path");
 
 // exit();
 
@@ -210,5 +237,15 @@ exercise = 5;
 // Hint: You need to append an index to the derivation path.
 
 // Your code here!
+let mnemonic = wallet.mnemonic.phrase;
 
+let path, myWallet;
+for (let i = 0; i < 10; i++) {
+  path = `${baseDevPath}${i}`;
+  myWallet = ethers.HDNodeWallet.fromPhrase(mnemonic, path);
+  console.log("Address", i, myWallet.address);
+  console.log("Private key", i, myWallet.privateKey);
+}
+
+exit();
 // exit();
