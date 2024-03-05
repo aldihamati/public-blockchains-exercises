@@ -23,11 +23,16 @@ const path = require('path');
 // Hint: As you did in file 1_wallet and 2_provider.
 
 // Your code here!
-
+pathToDotEnv = path.join(__dirname, '..', '..', '.env');
+console.log(pathToDotEnv);
+require("dotenv").config({ path: pathToDotEnv });
+const ethers = require("ethers");
 // b. Create a Sepolia provider.
+const providerKey = process.env.ALCHEMY_KEY;
 
+const sepoliaUrl = `${process.env.ALCHEMY_SEPOLIA_API_URL}${providerKey}`;
 // Your code here!
-
+const sepoliaProvider = new ethers.JsonRpcProvider(sepoliaUrl);
 // Exercise 1. Create a Signer.
 ///////////////////////////////
 
@@ -43,32 +48,56 @@ const path = require('path');
 // Hint2: if you get an error here, check that the private key begins with "0x".
 
 // Your code here!
-
+let signer = new ethers.Wallet(process.env.METAMASK_1_PRIVATE_KEY);
+console.log(signer.address);
 // Exercise 2. Sign something.
 //////////////////////////////
 
 const sign = async (message = 'Hello world') => {
+    // Signing the message
+    const signature = await signer.signMessage(message);
+
+    const verifiedSigner = ethers.verifyMessage(message, signature);
     
-    // Your code here!
+    if (verifiedSigner === signer.address) {
+        console.log('Signature is valid.');
+    }
+    else {
+        console.log('Signature is NOT valid.');
+    }
+
+    let anotherMessage = 'Give me 5 ETH';
+
+    const verifiedSigner2 = ethers.verifyMessage(anotherMessage, signature);
+    
+    if (verifiedSigner2 === signer.address) {
+        console.log('Tampered signature is valid.');
+    }
+    else {
+        console.log('Tampered signature is NOT valid.');
+    }
 };
 
-// sign();
+sign();
 
 // Exercise 3. Connect to the blockchain. 
 /////////////////////////////////////////
 
 // a. Connect the signer to the Sepolia network.
 // Hint: .connect()
+const connect = async() => {
+    signer = await signer.connect(sepoliaProvider);
+    // console.log(signer);
 
+    let nonce = await signer.getNonce();
+    // Equivalent to.
+    // let nonce = await sepoliaProvider.getTransactionCount("unima.eth");
+    console.log('The nonce is', nonce);
+};
 // b. Print the next nonce necessary to send a transaction.
 // Hint: .getNonce()
 
-const connect = async() => {
-    
-    // Your code here!
-};
-
-// connect();
+connect();
 
 // c. Replace the signer created above at exercise 1 with one that takes the 
 // Sepolia provider as second parameter. This is necessary even
@@ -77,7 +106,7 @@ const connect = async() => {
 // and the remaning of the exercises. If unclear, just check the solution :)
 
 // Replace the signer created above.
-
+signer = new ethers.Wallet(process.env.METAMASK_1_PRIVATE_KEY, sepoliaProvider);
 
 
 // Exercise 4. Send a transaction.
@@ -101,8 +130,31 @@ const account2 = process.env.METAMASK_2_ADDRESS;
 
 const sendTransaction = async () => {
 
-    // Your code here!
+    let b1 = await sepoliaProvider.getBalance(signer.address);
+    let b2 = await sepoliaProvider.getBalance(account2);
+    b1 = ethers.formatEther(b1);
+    b2 = ethers.formatEther(b2);
+
+    tx = await signer.sendTransaction({
+        to: account2,
+        value: ethers.parseEther("0.01")
+    });
+
+    // console.log(tx);
+    
+    console.log('Transaction is in the mempool...');
+    await tx.wait();
+
+    console.log('Transaction mined!');
+
+    let updatedB1 = await sepoliaProvider.getBalance(signer.address);
+    let updatedB2 = await sepoliaProvider.getBalance(account2);
+    updatedB1 = ethers.formatEther(updatedB1);
+    updatedB2 = ethers.formatEther(updatedB2);
+
+    console.log('Balance for', signer.address, 'changed from', b1, 'to', updatedB1);
+    console.log('Balance for', account2, 'changed from', b2, 'to', updatedB2);
 };
 
-// sendTransaction();
+sendTransaction();
 

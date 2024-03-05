@@ -28,7 +28,6 @@ console.log(pathToDotEnv);
 // Checkpoint. Does the value of the terminal depend 
 // on the directory of execution?
 
-
 // b. To avoid path issues, you can specify the path to the .env file manually
 // in the `config()` method of the dotenv package. See how to do it in
 // the examples here: https://www.npmjs.com/package/dotenv
@@ -40,18 +39,15 @@ console.log(pathToDotEnv);
 // Hint: use path.join(...) to build a relative path to the .env file. 
 
 // Edit this line, then load the .env file:
-// pathToDotEnv = path.join(...);
+pathToDotEnv = path.join(__dirname, '..', '..', '.env');
 console.log(pathToDotEnv);
 
 // Your code here.
-
+require("dotenv").config({ path: pathToDotEnv });
 // c. Bonus. Load the 'fs' native module and use the method `existsSync` to 
 // check if the path to the .dotenv file is correct.
 
 // Your code here.
-
-
-
 
 // Exercise 2. Create and fill in .env file.
 ////////////////////////////////////////////
@@ -91,9 +87,14 @@ exercise = '3a';
 // a. Check that the variable METAMASK_ACCOUNT_1 is not empty. Write an 
 // if statement that prints a warning message if empty.
 // Hint: https://javascript.info/ifelse
-
+console.log(process.env.METAMASK_1_ADDRESS);
 // Your code here!
+let privateKey = process.env.METAMASK_PRIVATE_KEY;
+if (privateKey === "") {
+    console.log('Missing private key, fix your .env file');
+}
 
+exit();
 // exit();
 
 // b. Create an array with all the names of the variables written in the .env
@@ -105,7 +106,15 @@ exercise = '3b';
 // Your code here!
 
 // exit();
+let variablesToCheck = [
+    "INFURA_KEY", "INFURA_SEPOLIA", "INFURA_GOERLI", "INFURA_MAINNET",
+    "ALCHEMY_KEY", "ALCHEMY_SEPOLIA", "ALCHEMY_GOERLI", "ALCHEMY_MAINNET",
+    "METAMASK_1_ADDRESS", "METAMASK_1_PRIVATE_KEY",
+    "METAMASK_2_ADDRESS", "METAMASK_2_PRIVATE_KEY",
+    "ETHERSCAN_KEY"
+];
 
+console.log('Num of variables in .env to check: ', variablesToCheck.length);
 // c. Loop through all the elements of the array and check that the variable
 // is set and non-empty under `process.env`.
 
@@ -116,9 +125,20 @@ exercise = '3b';
 
 // Solution 1. forEach.
 variablesToCheck.forEach(v => {
-    // Your code here!
+    if (!process.env[v]) {
+        console.log(process.env[v])
+        console.log(`Missing ${v}, fix your .env file`);
+    }
 });
 
+// Solution 2. For-loop.
+for (let index = 0; index < variablesToCheck.length; index++) {
+    const v = variablesToCheck[index];
+    if (!process.env[v]) {
+        console.log(process.env[v])
+        console.log(`Missing ${v}, fix your .env file`);
+    }
+}
 // Solution 2. For-loop.
 
 // Your code here!
