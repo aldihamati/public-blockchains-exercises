@@ -36,8 +36,8 @@ return;
 // No worries, it's quite similar.
 
 // a. Require ethers and print the version of Ethers, just to be sure.
-
-// Your code here!
+const ethers = require("ethers");
+console.log("Ethers version:", ethers.version);
 
 return;
 
@@ -47,7 +47,7 @@ return;
 // Print the version of this plugin, it should be the same as above.
 
 // Your code here!
-
+console.log("HH Wrapped Ethers version:", hre.ethers.version);
 return;
 
 // Exercise 1. Create a new Solidity contract.
@@ -95,8 +95,11 @@ async function main() {
   // Hint: hre.ethers.getSigners() returns an array.
 
   // Your code here!
+  const hardhatSigners = await hre.ethers.getSigners();
+  const hhSigner = hardhatSigners[0];
 
-  return;
+  console.log("HH Signer address:", hhSigner.address);
+  //return;
 
   // c. Get your new contract. Hardhat Ethers automatically fetches the ABI from
   // the artifacts, so you don't need to specify it. Use the method
@@ -104,8 +107,13 @@ async function main() {
   // then print the contract address.
 
   // Your code here!
+  const lock = await hre.ethers.getContractAt(contractName,
+    contractAddress,
+    hhSigner);  
 
-  return;
+
+  console.log(contractName + " address", lock.address);
+  //return;
 
   // d. Bonus. You can get the contract also without Hardhat's wrapped Ethers.
   // The standard (here V5) Ethers.JS requires a bit more code, but is is 
@@ -117,11 +125,11 @@ async function main() {
     // d.1 Fetch the ABI from the artifacts 
     // (it expects contract name = file name).
 
-    // Your code here!
+  
 
     // d.2 Create the contract and print the address.
 
-    // Your code here!
+    
 
     // const lock = ... ;
 
@@ -138,7 +146,8 @@ async function main() {
       
     // Print the owner of the lock.
    
-    // Your code here!
+    const owner = await lock.owner();
+    console.log("Owner of " + contractName, owner);
 
     // Print the unlock time. 
     // Be careful! You will get a BigInt, you need first
@@ -147,10 +156,14 @@ async function main() {
     // https://stackoverflow.com/questions/847185/convert-a-unix-timestamp-to-time-in-javascript
     // https://stackoverflow.com/questions/53970655/how-to-convert-bigint-to-number-in-javascript
 
-    // Your code here!
+    let unlockTime = await lock.unlockTime();
+    unlockTime = Number(unlockTime);
+    console.log(contractName + " unlock timestamp:", unlockTime);
+    let date = new Date((unlockTime * 1000));
+    console.log(contractName + " unlock date:", date);
   };
 
-  // await readContract();
+  await readContract();
 
   // Exercise 3. Interact with your new Solidity contract (WRITE).
   ////////////////////////////////////////////////////////////////
@@ -166,9 +179,20 @@ async function main() {
   const withdrawAttempt1 = async (lockContract = lock) => {
         
     // Your code here!
+    let b1 = await hhSigner.getBalance();
+    // V5 Syntax for accessing formatEther.
+      b1 = ethers.utils.formatEther(b1);
+      console.log('The balance before withdrawing is ', b1);
+  
+      console.log("Withdrawing fom Lock");
+      await lockContract.withdraw();
+  
+      let b2 = await hhSigner.getBalance();
+      b2 = ethers.utils.formatEther(b2);
+      console.log('The balance after withdrawing is ', b2);
   };
 
-  // await withdrawAttempt1();
+  await withdrawAttempt1();
   
   // Exercise 3. Remove the check for unlock date (WRITE).
   ////////////////////////////////////////////////////////////////////
@@ -187,11 +211,11 @@ async function main() {
                                                    hhSigner);
     
     // Standard Ethers (V5).
-    // const newLock = await getContractManual(hhSigner, newContractAddress);
+    //const newLock = await getContractManual(hhSigner, newContractAddress);
     
     // Can also print:
-    // console.log(newLock.address);
-    // await readContract(newLock);  
+    console.log(newLock.address);
+    await readContract(newLock);  
 
     await withdrawAttempt1(newLock);
   };
