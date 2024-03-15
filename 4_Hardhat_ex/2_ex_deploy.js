@@ -29,22 +29,17 @@ return;
 // Exercise 1. Understand Ethers in Hardhat.
 ////////////////////////////////////////////
 
-// You have learned already how to use Ethers V6. Good!
-// Unfortunately, Ethers V6 was released in Feb 2023, and Hardhat has not yet
-// caught up. The default version of Ethers in Hardhat is V5, but V6 is 
-// currently being developed. For now you need to adapt to the V5 syntax.
-// No worries, it's quite similar.
+// Hardhat offers a wrapped version of Ethers with additional functionalities.
+// Sometimes their version numbers might differ.
 
 // a. Require ethers and print the version of Ethers, just to be sure.
-const ethers = require("ethers");
-console.log("Ethers version:", ethers.version);
+
+// Your code here!
 
 return;
 
-// b. Hardhat uses v5 because it offers a plugin that is a wrapped version of
-// Ethers which makes things a little easier. This is available under
-// hre.ethers (require statement above).
-// Print the version of this plugin, it should be the same as above.
+// b. Now prints the the version of the Hardhat's plugin available under
+// hre.ethers.
 
 // Your code here!
 console.log("HH Wrapped Ethers version:", hre.ethers.version);
@@ -56,7 +51,7 @@ return;
 // We haven't fully understood the Lock contract and we are already creating
 // a new one? Yes, it's quite easy. 
 
-// a. Copy the contract file "Lock.sol" and rename creatively it as "Lock2.sol".
+// a. Copy the contract file "Lock.sol" and creatively rename it as "Lock2.sol".
 
 // b. Copy the deployment script "deploy.js" and repeat the same creative
 // act by renaming it into "deploy2.js".
@@ -67,8 +62,8 @@ return;
 
 // d. Deploy the "new" contract.
 
-// Exercise 2. Interact with your new Solidity contract (READ).
-///////////////////////////////////////////////////////////////
+// Exercise 2. Read data of your new Solidity contract.
+///////////////////////////////////////////////////////
 
 // If you remember from 3_EtherJS/2_signer.js, to interact with a smart 
 // contract you need three pieces of information:
@@ -116,7 +111,7 @@ async function main() {
   //return;
 
   // d. Bonus. You can get the contract also without Hardhat's wrapped Ethers.
-  // The standard (here V5) Ethers.JS requires a bit more code, but is is 
+  // The standard Ethers.JS requires a bit more code, but is is 
   // useful to understand how it works.
 
   const getContractManual = async(signer = hhSigner, 
@@ -179,20 +174,9 @@ async function main() {
   const withdrawAttempt1 = async (lockContract = lock) => {
         
     // Your code here!
-    let b1 = await hhSigner.getBalance();
-    // V5 Syntax for accessing formatEther.
-      b1 = ethers.utils.formatEther(b1);
-      console.log('The balance before withdrawing is ', b1);
-  
-      console.log("Withdrawing fom Lock");
-      await lockContract.withdraw();
-  
-      let b2 = await hhSigner.getBalance();
-      b2 = ethers.utils.formatEther(b2);
-      console.log('The balance after withdrawing is ', b2);
   };
 
-  await withdrawAttempt1();
+  // await withdrawAttempt1();
   
   // Exercise 3. Remove the check for unlock date (WRITE).
   ////////////////////////////////////////////////////////////////////
@@ -211,11 +195,11 @@ async function main() {
                                                    hhSigner);
     
     // Standard Ethers (V5).
-    //const newLock = await getContractManual(hhSigner, newContractAddress);
+    // const newLock = await getContractManual(hhSigner, newContractAddress);
     
     // Can also print:
-    console.log(newLock.address);
-    await readContract(newLock);  
+    // console.log(newLock.address);
+    // await readContract(newLock);  
 
     await withdrawAttempt1(newLock);
   };
