@@ -18,7 +18,7 @@ const path = require('path');
 
 // Require packages.
 
-pathToDotEnv = path.join(__dirname, '..', '..', '.env');
+pathToDotEnv = path.join(__dirname, '..', '.env');
 // console.log(pathToDotEnv);
 require("dotenv").config({ path: pathToDotEnv });
 
@@ -26,10 +26,32 @@ const ethers = require("ethers");
 
 const providerKey = process.env.ALCHEMY_KEY;
 
-const goerliUrl = `${process.env.ALCHEMY_GOERLI_API_URL}${providerKey}`;
+const sepoliaUrl = `${process.env.ALCHEMY_SEPOLIA_API_URL}${providerKey}`;
 // console.log(goerliUrl);
-const goerliProvider = new ethers.JsonRpcProvider(goerliUrl);
+const sepoliaProvider = new ethers.JsonRpcProvider(sepoliaUrl);
 
+const blockInfo = async () => {
+    
+    let blockNumber = await sepoliaProvider.getBlockNumber();
+    let block = await sepoliaProvider.getBlock(blockNumber);
+    console.log(block);
+
+    let tx = await block.getTransaction(0);
+    console.log(tx);
+    let txHash = block.transactions[0];
+
+    const txReceipt = await sepoliaProvider.getTransactionReceipt(txHash);
+    console.log(txReceipt);
+    console.log('A transaction from', txReceipt.to, 'to', txReceipt.from);
+
+    // Long list...
+    block = await sepoliaProvider.getBlock(blockNumber, true);
+    console.log(block.prefetchedTransactions);
+
+
+};
+
+blockInfo();
 // Exercise 1. Bonus. Get ERC20 Balance.
 ////////////////////////////////////////
 

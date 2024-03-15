@@ -23,7 +23,7 @@ const path = require('path');
 // Hint: As you did in file 1_wallet and 2_provider.
 
 // Your code here!
-pathToDotEnv = path.join(__dirname, '..', '..', '.env');
+pathToDotEnv = path.join(__dirname, '..', '.env');
 console.log(pathToDotEnv);
 require("dotenv").config({ path: pathToDotEnv });
 const ethers = require("ethers");

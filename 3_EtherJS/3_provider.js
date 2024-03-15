@@ -16,9 +16,15 @@ const path = require('path');
 
 // Hint: As you did in file 1_wallet.
 
-// Your code here!
-require('dotenv').config();
-const ethers=reuqire('ethers');
+
+pathToDotEnv = path.join(__dirname, '..', '.env');
+// console.log(pathToDotEnv);
+require("dotenv").config({ path: pathToDotEnv });
+
+
+
+
+const ethers = require("ethers");
 // Exercise 1. Connect to Mainnet (a.k.a welcome async!).
 /////////////////////////////////////////////////////////
 
@@ -47,10 +53,10 @@ const ethers=reuqire('ethers');
 
 
 // Your code here!
-const providerKey = process.env.INFURA_KEY;
+const providerKey = process.env.ALCHEMY_KEY;
 
-const mainnetInfuraUrl = `${process.env.INFURA_MAINNET}${providerKey}`;
-// console.log(mainnetInfuraUrl);
+const mainnetInfuraUrl = `${process.env.ALCHEMY_MAINNET_API_URL}${providerKey}`;
+console.log(mainnetInfuraUrl);
 const mainnetProvider = new ethers.JsonRpcProvider(mainnetInfuraUrl);
 
 // b. Verify that the network's name is "mainnet" and the chain id is 1.
@@ -75,6 +81,8 @@ const mainnetProvider = new ethers.JsonRpcProvider(mainnetInfuraUrl);
     console.log('Provider\'s network chain id: ', Number(net.chainId));
 
 })();
+
+
 
 // However, the async function could also be named, and the result is:
 const network = async () => {
